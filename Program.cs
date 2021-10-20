@@ -18,13 +18,7 @@ Configure(app =>
             async c =>
             {
                 c.Response.ContentType = "application/json; charset=utf-8";
-                await c.Response.WriteAsync(await knightService.GetTopKnight((string)c.Request.RouteValues["hash"]), Encoding.UTF8);
-            });
-        e.MapGet("/api/{knight}/{hash}",
-            async c =>
-            {
-                c.Response.ContentType = "application/json; charset=utf-8";
-                await c.Response.WriteAsync(await knightService.VerifyKnight((string)c.Request.RouteValues["knight"], (string)c.Request.RouteValues["hash"]), Encoding.UTF8);
+                await c.Response.WriteAsync(await knightService.GetKnight((string)c.Request.RouteValues["hash"]), Encoding.UTF8);
             });
     });
 }).Build().Run();
