@@ -1,4 +1,6 @@
 ﻿using Neo.SmartContract.Native;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -25,7 +27,10 @@ namespace neo_knights_api
             if (uri.Authority == "www.reddit.com" || uri.Authority == "reddit.com")
             {
                 message = await client.GetAsync(uri, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
-                return await message.Content.ReadAsStringAsync(CancellationToken.None);
+                var r = await message.Content.ReadAsStringAsync(CancellationToken.None);
+                var response = new JObject();
+                response["result"] = (JToken)JsonConvert.DeserializeObject(r);
+                return JsonConvert.SerializeObject(response);
             }
              return string.Empty;
         }
