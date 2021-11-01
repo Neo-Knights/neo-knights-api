@@ -29,7 +29,13 @@ namespace neo_knights_api
                 message = await client.GetAsync(uri, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
                 var r = await message.Content.ReadAsStringAsync(CancellationToken.None);
                 var response = new JObject();
+                //have to remove:
+                // ups, upvote_ratio, score, downs
                 response["result"] = (JToken)JsonConvert.DeserializeObject(r);
+                response["result"][0]["data"]["children"][0]["data"]["ups"].Parent.Remove();
+                response["result"][0]["data"]["children"][0]["data"]["upvote_ratio"].Parent.Remove();
+                response["result"][0]["data"]["children"][0]["data"]["score"].Parent.Remove();
+                response["result"][0]["data"]["children"][0]["data"]["downs"].Parent.Remove();
                 return JsonConvert.SerializeObject(response);
             }
              return string.Empty;
